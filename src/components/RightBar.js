@@ -12,6 +12,8 @@ const RightBar = () => {
     <Paper
       elevation={2}
       sx={{
+        // backgroundColor: "red",
+        paddingBottom: 30,
         borderRadius: "0",
         display: {
           xs: "none",

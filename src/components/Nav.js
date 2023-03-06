@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   AppBar,
@@ -52,6 +53,7 @@ const SearchBar = styled(InputBase)(({ theme }) => ({
   },
 }));
 const Nav = () => {
+  let navigate = useNavigate();
   return (
     <Box>
       <AppBar position="relative">
@@ -65,6 +67,12 @@ const Nav = () => {
               xs: "block",
               sm: "none",
             },
+            "&:hover": {
+              cursor: "pointer",
+            },
+          }}
+          onClick={(e) => {
+            navigate("/");
           }}
         >
           MyAnimeList
@@ -83,6 +91,12 @@ const Nav = () => {
                 xs: "none",
                 sm: "block",
               },
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            onClick={(e) => {
+              navigate("/");
             }}
           >
             MyAnimeList

@@ -15,6 +15,8 @@ function App() {
   const [randomCharacterList, setRandomCharacterList] = useState([]);
   const [randomPeopleList, setRandomPeopleList] = useState([]);
   const [mangaRecommendList, setMangaRecommendList] = useState([]);
+  const [paramsDetailData, setParamsDetailData] = useState({});
+  const [detailData, setDetailData] = useState({});
   const navigate = useNavigate();
 
   const TopAnimePath = "./Data/TopAnime.json";
@@ -24,6 +26,7 @@ function App() {
   const TopPeoplePath = "./Data/TopPeople.json";
   const mangaRecommendPath = "./Data/MangaRecommendations.json";
 
+  //==================== API Handle
   const getTopAnimeList = async (path) => {
     try {
       const res = await axios.get(path);
@@ -129,6 +132,18 @@ function App() {
     }
   };
 
+  const handleGetDetail = async (id, category) => {
+    try {
+      const res = await axios.get(
+        `https://api.jikan.moe/v4/${category}/${id}/full`
+      );
+      const data = res.data.data;
+      setDetailData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //==================== CALL API
   useEffect(() => {
     getTopAnimeList(TopAnimePath);
@@ -139,9 +154,21 @@ function App() {
     getRandomManga(mangaRecommendPath);
   }, []);
 
+  useEffect(() => {
+    const { id, category } = paramsDetailData;
+    if (id && category) {
+      handleGetDetail(id, category);
+    }
+  }, [paramsDetailData]);
+
   //==================== Event handle
   const handleViewAnime = async (id) => {
     try {
+      setParamsDetailData({
+        id: id.toString(),
+        category: "anime",
+      });
+
       navigate(`/anime/${id}`);
     } catch (error) {
       console.log(error);
@@ -150,6 +177,11 @@ function App() {
 
   const handleViewManga = async (id) => {
     try {
+      setParamsDetailData({
+        id: id.toString(),
+        category: "manga",
+      });
+
       navigate(`/manga/${id}`);
     } catch (error) {
       console.log(error);
@@ -163,11 +195,21 @@ function App() {
   };
 
   const handleViewCharacter = (id) => {
-    navigate(`/character/${id}`);
+    setParamsDetailData({
+      id: id.toString(),
+      category: "characters",
+    });
+
+    navigate(`/characters/${id}`);
     // console.log(id);
   };
 
   const handleViewPeople = (id) => {
+    setParamsDetailData({
+      id: id.toString(),
+      category: "people",
+    });
+
     navigate(`/people/${id}`);
     // console.log(id);
   };
@@ -187,6 +229,7 @@ function App() {
         randomPeopleList,
         handleViewPeople,
         mangaRecommendList,
+        detailData,
       }}
     >
       <div className="app">

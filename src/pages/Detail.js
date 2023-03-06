@@ -1,12 +1,28 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import { React, useContext } from "react";
+import { Grid } from "@mui/material";
+import Nav from "../components/Nav";
+import DetailContext from "../components/DetailContext";
+import DetailLeftBar from "../components/DetailLeftBar";
+import DetailRightBar from "../components/DetailRightBar";
+import MyContext from "../components/MyContext";
 
 const Detail = () => {
-  let { id, category } = useParams();
+  const { detailData } = useContext(MyContext);
+
   return (
-    <div>
-      Detail: {id}, category: {category}
-    </div>
+    <>
+      <Nav />
+      <DetailContext.Provider value={{ detailData }}>
+        <Grid container spacing={2} mt={2} columns={{ xs: 9, sm: 12 }}>
+          <Grid item xs={3}>
+            <DetailLeftBar />
+          </Grid>
+          <Grid item xs={9}>
+            <DetailRightBar />
+          </Grid>
+        </Grid>
+      </DetailContext.Provider>
+    </>
   );
 };
 

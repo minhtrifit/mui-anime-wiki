@@ -18,7 +18,7 @@ const DetailLeftBar = () => {
 
   if (detailData.mal_id && !loadingDetail) {
     checkResponse = true;
-    console.log("Check data", detailData);
+    // console.log("Check data", detailData);
   }
 
   const summaryBirthday = (str) => {

@@ -9,6 +9,10 @@ import {
   styled,
   alpha,
   InputBase,
+  Button,
+  Stack,
+  Snackbar,
+  Alert as MuiAlert,
 } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import MyContext from "./MyContext";
@@ -54,11 +58,36 @@ const SearchBar = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Nav = () => {
   // let navigate = useNavigate();
-  const { handleNavigation } = useContext(MyContext);
+  const {
+    handleNavigation,
+    search,
+    setSearch,
+    handleSearch,
+    openSearchAlert,
+    handleCloseSearchAlert,
+  } = useContext(MyContext);
   return (
     <Box>
+      <Snackbar
+        open={openSearchAlert}
+        autoHideDuration={6000}
+        onClose={handleCloseSearchAlert}
+      >
+        <Alert
+          onClose={handleCloseSearchAlert}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Fill search bar before search!
+        </Alert>
+      </Snackbar>
       <AppBar position="relative">
         <Typography
           variant="h5"
@@ -104,15 +133,32 @@ const Nav = () => {
           >
             MyAnimeList
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <SearchBar
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <Stack direction="row" spacing={3}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <SearchBar
+                placeholder="Search with format: id category"
+                inputProps={{ "aria-label": "search" }}
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+            </Search>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#2f92ed",
+              }}
+              onClick={(e) => {
+                handleSearch();
+              }}
+            >
+              Search
+            </Button>
+          </Stack>
         </Toolbar>
       </AppBar>
     </Box>

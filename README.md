@@ -1,1 +1,1 @@
-# Website link: Comming soon
+# Website link: https://animewikiz.netlify.app

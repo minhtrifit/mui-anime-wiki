@@ -38,6 +38,7 @@ const Slide3 = (props) => {
               sx={{
                 "&:hover": {
                   cursor: "pointer",
+                  backgroundColor: "#e8e8e8",
                 },
               }}
             >
@@ -64,6 +65,7 @@ const Slide3 = (props) => {
               sx={{
                 "&:hover": {
                   cursor: "pointer",
+                  backgroundColor: "#e8e8e8",
                 },
               }}
             >

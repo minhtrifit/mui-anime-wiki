@@ -18,6 +18,8 @@ function App() {
   const [detailData, setDetailData] = useState({});
   const [detailDataReview, setDetailDataReview] = useState({});
   const [loadingDetail, setLoadingDetail] = useState(true);
+  const [search, setSearch] = useState("");
+  const [openSearchAlert, setOpenSearchAlert] = useState(false);
   const navigate = useNavigate();
 
   const TopAnimePath = "./Data/TopAnime.json";
@@ -237,6 +239,36 @@ function App() {
     setLoadingDetail(!loadingDetail);
   };
 
+  const handleCloseSearchAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSearchAlert(false);
+  };
+
+  const handleSearch = () => {
+    if (search === "") {
+      setOpenSearchAlert(true);
+    } else {
+      const str = search.split(" ");
+      const [id, category] = str;
+      if (category === "anime") {
+        handleViewAnime(id);
+      }
+      if (category === "manga") {
+        handleViewManga(id);
+      }
+      if (category === "characters") {
+        handleViewCharacter(id);
+      }
+      if (category === "people") {
+        handleViewPeople(id);
+      }
+      setLoadingDetail(!loadingDetail);
+      setSearch("");
+    }
+  };
+
   return (
     <MyContext.Provider
       value={{
@@ -257,6 +289,11 @@ function App() {
         loadingDetail,
         setLoadingDetail,
         detailDataReview,
+        search,
+        setSearch,
+        handleSearch,
+        openSearchAlert,
+        handleCloseSearchAlert,
       }}
     >
       <div className="app">

@@ -1,6 +1,7 @@
 import { React } from "react";
 import { Grid } from "@mui/material";
 import Nav from "../components/Nav";
+import Footer from "../components/Footer";
 import LeftBar from "../components/LeftBar";
 import RightBar from "../components/RightBar";
 
@@ -16,6 +17,7 @@ const Home = () => {
           <RightBar />
         </Grid>
       </Grid>
+      <Footer />
     </>
   );
 };

@@ -30,8 +30,19 @@ const ExpandMore = styled((props) => {
 const Card2 = (props) => {
   const { item, detail, handleViewDetail } = props;
   const [expanded, setExpanded] = React.useState(false);
-  //   console.log(item);
+  // console.log(item);
   // console.log(detail);
+
+  const summaryDate = (str) => {
+    const subStr = str.split("T");
+    const newDate = subStr[0];
+    return newDate;
+  };
+
+  const summaryContent = (str) => {
+    const newContent = str.slice(0, 200);
+    return newContent;
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -63,6 +74,16 @@ const Card2 = (props) => {
               ID: {detail.mal_id}
             </Typography> */}
             <Typography
+              href={item.user.url}
+              color="gray"
+              fontSize={14}
+              mt={1}
+              mb={2}
+              textAlign="justify"
+            >
+              Description: {summaryContent(item.content)}...
+            </Typography>
+            <Typography
               component="a"
               href={item.user.url}
               sx={{
@@ -90,7 +111,7 @@ const Card2 = (props) => {
       </Grid>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          Date: {item.date}
+          Date: {summaryDate(item.date)}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

@@ -5,7 +5,6 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import MyContext from "./components/MyContext";
 import Home from "./pages/Home";
 import Detail from "./pages/Detail";
-import Footer from "./components/Footer";
 
 function App() {
   const [topAnimeList, setTopAnimeList] = useState([]);
@@ -17,6 +16,8 @@ function App() {
   const [mangaRecommendList, setMangaRecommendList] = useState([]);
   const [paramsDetailData, setParamsDetailData] = useState({});
   const [detailData, setDetailData] = useState({});
+  const [detailDataReview, setDetailDataReview] = useState({});
+  const [loadingDetail, setLoadingDetail] = useState(true);
   const navigate = useNavigate();
 
   const TopAnimePath = "./Data/TopAnime.json";
@@ -144,7 +145,20 @@ function App() {
     }
   };
 
+  const handleGetDetailReviews = async (id, category) => {
+    try {
+      const res = await axios.get(
+        `https://api.jikan.moe/v4/${category}/${id}/reviews`
+      );
+      const data = res.data.data;
+      setDetailDataReview(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //==================== CALL API
+  // Main
   useEffect(() => {
     getTopAnimeList(TopAnimePath);
     getTopMangaList(TopMangaPath);
@@ -154,10 +168,12 @@ function App() {
     getRandomManga(mangaRecommendPath);
   }, []);
 
+  // Get detail
   useEffect(() => {
     const { id, category } = paramsDetailData;
     if (id && category) {
       handleGetDetail(id, category);
+      handleGetDetailReviews(id, category);
     }
   }, [paramsDetailData]);
 
@@ -214,6 +230,13 @@ function App() {
     // console.log(id);
   };
 
+  const handleNavigation = () => {
+    navigate("/");
+    document.title = "Anime Wiki";
+    getAnimeRecommend(animeRecommendPath, 1);
+    setLoadingDetail(!loadingDetail);
+  };
+
   return (
     <MyContext.Provider
       value={{
@@ -230,6 +253,10 @@ function App() {
         handleViewPeople,
         mangaRecommendList,
         detailData,
+        handleNavigation,
+        loadingDetail,
+        setLoadingDetail,
+        detailDataReview,
       }}
     >
       <div className="app">
@@ -239,7 +266,6 @@ function App() {
             <Route path="/:category/:id" element={<Detail />} />
           </Routes>
         </Container>
-        <Footer />
       </div>
     </MyContext.Provider>
   );

@@ -1,5 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+// import { useNavigate } from "react-router-dom";
 import {
   Box,
   AppBar,
@@ -10,6 +11,7 @@ import {
   InputBase,
 } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
+import MyContext from "./MyContext";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -53,7 +55,8 @@ const SearchBar = styled(InputBase)(({ theme }) => ({
   },
 }));
 const Nav = () => {
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
+  const { handleNavigation } = useContext(MyContext);
   return (
     <Box>
       <AppBar position="relative">
@@ -72,7 +75,7 @@ const Nav = () => {
             },
           }}
           onClick={(e) => {
-            navigate("/");
+            handleNavigation();
           }}
         >
           MyAnimeList
@@ -96,7 +99,7 @@ const Nav = () => {
               },
             }}
             onClick={(e) => {
-              navigate("/");
+              handleNavigation();
             }}
           >
             MyAnimeList

@@ -20,6 +20,7 @@ function App() {
   const [loadingDetail, setLoadingDetail] = useState(true);
   const [search, setSearch] = useState("");
   const [openSearchAlert, setOpenSearchAlert] = useState(false);
+  const [backPageEvent, setBackPageEvent] = useState(false);
   const navigate = useNavigate();
 
   const TopAnimePath = "./Data/TopAnime.json";
@@ -174,10 +175,31 @@ function App() {
   useEffect(() => {
     const { id, category } = paramsDetailData;
     if (id && category) {
+      // console.log(id, category);
       handleGetDetail(id, category);
       handleGetDetailReviews(id, category);
     }
   }, [paramsDetailData]);
+
+  // Back page event
+  useEffect(() => {
+    const onBackButtonEvent = (e) => {
+      e.preventDefault();
+      navigate("/");
+      setBackPageEvent(true);
+      getAnimeRecommend(animeRecommendPath, 1);
+      if (loadingDetail === false) {
+        setLoadingDetail(!loadingDetail);
+        console.log("Change loading");
+      }
+    };
+
+    window.history.pushState(null, null, window.location.pathname);
+    window.addEventListener("popstate", onBackButtonEvent);
+    return () => {
+      window.removeEventListener("popstate", onBackButtonEvent);
+    };
+  }, [backPageEvent, navigate, loadingDetail]);
 
   //==================== Event handle
   const handleViewAnime = async (id) => {

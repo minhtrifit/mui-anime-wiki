@@ -14,6 +14,8 @@ const Detail = () => {
     useContext(MyContext);
   const { id, category } = useParams();
 
+  console.log(loadingDetail);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = `Anime Wiki | ${category} | ${id}`;
